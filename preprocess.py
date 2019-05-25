@@ -77,7 +77,7 @@ for root, dirs, files in os.walk(os.path.join('data', 'FDDB-folds')):
     if not os.path.exists(os.path.join('data', 'test')):
         os.makedirs(os.path.join('data', 'test'))
 
-    with open('train.txt', 'w') as f:
+    with open('data/train.txt', 'w') as f:
         ## generate positive samples for training
         cnt = 0
         for file in files[:8]:  ## first 8 folders to train
@@ -101,7 +101,7 @@ for root, dirs, files in os.walk(os.path.join('data', 'FDDB-folds')):
                         f.write(f'{output_path} 0\n')
                         cnt += 1
 
-    with open('test.txt', 'w') as f:
+    with open('data/test.txt', 'w') as f:
         ## generate positive samples for testing
         cnt = 0
         for file in files[-2:]:  ## first 8 folders to train
