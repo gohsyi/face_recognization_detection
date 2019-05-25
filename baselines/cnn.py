@@ -113,6 +113,16 @@ class CNN(object):
 
 # test
 if __name__ == '__main__':
+
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-gpu', type=str, default='-1')
+    args = parser.parse_args()
+
+    import os
+    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+    os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
+
     X, y = get_data_and_labels('data/train.txt', do_hog=False)
     model = CNN()
     model.fit(X, y)
