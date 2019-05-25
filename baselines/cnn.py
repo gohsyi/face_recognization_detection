@@ -107,7 +107,7 @@ class CNN(object):
         :return: a mini-batch for training
         """
 
-        batch_indices = np.random.choice(X.shape[0], self.batch_size)
+        batch_indices = np.random.choice(X.shape[0], self.batch_size, replace=False)
         return X[batch_indices, :, :, :], y[batch_indices]
 
 
