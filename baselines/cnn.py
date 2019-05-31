@@ -1,13 +1,13 @@
 import numpy as np
 import tensorflow as tf
 
-from util import get_logger, get_data_and_labels
+from common.util import get_data_and_labels
 
-from baselines.common import layers
-from baselines.common import tf_util
+from baselines.common import Model
+from baselines.common import layers, tf_util
 
 
-class CNN(object):
+class CNN(Model):
     """
     CNN model
     __init__:
@@ -27,7 +27,11 @@ class CNN(object):
                  image_height=96,  # height of image
                  image_width=96,  # width of image
                  image_channels=3,  # channels of image
+                 logger=None,  # user-defined logger
+                 seed=0,  # global random seed
                  log_interval=10):  # specifies how frequently the logs are printed out
+
+        super(CNN, self).__init__(logger=logger, seed=seed)
 
         self.X = tf.placeholder(tf.float32, [None, image_height, image_width, image_channels], 'observation')
         self.Y = tf.placeholder(tf.int32, [None], 'ground_truth')
@@ -57,7 +61,6 @@ class CNN(object):
 
         self.trainer = tf.train.AdamOptimizer(lr).minimize(self.loss)
 
-        self.output = get_logger('cnn').info
         self.sess = tf_util.get_session()
         self.batch_size = batch_size
         self.total_epoches = total_epoches

@@ -106,20 +106,3 @@ def load_variables(load_path, variables=None, sess=None):
             restores.append(v.assign(loaded_params[v.name]))
 
     sess.run(restores)
-
-
-def sample_k(logits, k):
-    """
-    sample the largest k logits
-    :param logits: logits before softmax
-    :param k: number of samples
-    :return:
-        tensor, indices of the largest k logits, represented with onehot
-        the shape is (batch_size x act_size)
-    """
-
-    act_size = logits.shape[-1]
-    noise = tf.random_uniform(tf.shape(logits))
-    _, indices = tf.nn.top_k(logits - tf.log(-tf.log(noise)), k=k)
-
-    return tf.reduce_sum(tf.one_hot(indices, act_size), 1)

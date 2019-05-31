@@ -2,7 +2,7 @@ import os
 import cv2
 import math
 import numpy as np
-from util import timed
+from common.util import timed
 
 
 def process_annotation(image, output_path, annotation, offsets=None):
@@ -104,7 +104,7 @@ for root, dirs, files in os.walk(os.path.join('data', 'FDDB-folds')):
     with open('data/test.txt', 'w') as f:
         ## generate positive samples for testing
         cnt = 0
-        for file in files[-2:]:  ## first 8 folders to train
+        for file in files[-2:]:  ## last 2 folders to test
             with timed(f'generate pos samples with {file} for testing'):
                 for image_path, annotation in get_face(file):
                     image = cv2.imread(image_path)

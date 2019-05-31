@@ -21,6 +21,7 @@ def get_logger(name, folder='logs'):
     :param name: name of this logger
     :return: created logger
     """
+
     if not os.path.exists(folder):
         os.mkdir(folder)
 
@@ -57,6 +58,7 @@ def timed(msg, logger=None):
     :param logger: if not None, use this logger to output instead of print
     :return: None
     """
+
     output = logger.info if logger is not None else print
     tstart = time.time()
 
@@ -127,7 +129,20 @@ def get_data_and_labels(txt, do_hog=True):
 
 
 def shuffle(X, y):
+    """
+    shuffle data
+    :param X: feature vector
+    :param y: label vector
+    :return: shuffled feature vector, shuffled label vector
+    """
+
+    assert X.shape[0] == y.shape[0]
+
+    if len(y.shape) == 1:
+        y = np.reshape(y, (-1, 1))
+
     data = np.concatenate([X, y], -1)
     np.random.shuffle(data)
     X, y = data[:, :-1], data[:, -1]
+
     return X, y
