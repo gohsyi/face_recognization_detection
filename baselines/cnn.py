@@ -46,12 +46,12 @@ class CNN(Model):
         conv2 = layers.conv2d(pool1, filters=32, ksize=(3, 3))
         pool2 = layers.max_pooling2d(conv2, psize=2, strides=2)
 
-        probs = layers.dense(tf.layers.flatten(pool2), 2, activation=tf.nn.softmax)
+        logits = layers.dense(tf.layers.flatten(pool2), 2)
 
-        self.y_pred = tf.argmax(probs, -1)
+        self.y_pred = tf.argmax(logits, -1)
 
         self.loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
-            logits=probs,
+            logits=logits,
             labels=self.Y,
         ))
 
