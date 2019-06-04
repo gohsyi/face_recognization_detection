@@ -49,6 +49,8 @@ elif args.model == 'cnn':
         total_epoches=args.total_epoches,
         seed=args.seed,
         logger=logger,
+        X_test=X_test,
+        y_test=y_test,
     )
 
 else:
