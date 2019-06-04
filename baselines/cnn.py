@@ -51,7 +51,7 @@ class CNN(Model):
         self.y_pred = tf.argmax(logits, -1)
 
         self.loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
-            logits=logits,
+            logits=tf.clip_by_value(logits, tf.constant(1e-4), tf.constant(1e4)),
             labels=self.Y,
         ))
 
