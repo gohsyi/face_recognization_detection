@@ -142,6 +142,9 @@ def shuffle(X, y):
 
     assert X.shape[0] == y.shape[0]
 
+    if len(X.shape) > 2:
+        return X, y
+
     if len(y.shape) == 1:
         y = np.reshape(y, (-1, 1))
 
