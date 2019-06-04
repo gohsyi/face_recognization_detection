@@ -17,23 +17,26 @@ for root, dirs, files in os.walk('logs'):
         if f[0] != '.' and f.split('.')[-1] == 'log':  # process .log
             p = os.path.join(root, f)
             print('processing %s' % p)
-            loss = []
-            acc = 0
+            loss, acc = [], []
             for line in open(p):
                 line = line.split()
                 for x in line:
                     x = x.split(':')
                     if x[0] == 'ep' and x[1] == '0':
-                        loss = []
-                        acc = 0
+                        loss, acc = [], []
                     if x[0] == 'loss':
                         loss.append(float(x[1]))
                     if x[0] == 'acc':
-                        acc = float(x[1])
+                        acc.append(float(x[1]))
 
             if len(loss) > 0:
                 plt.plot(loss)
-                plt.title('acc:%.2f' % acc)
+                plt.title('loss')
                 plt.savefig('.'.join(p.split('.')[:-1]) + '_loss.jpg')
                 plt.cla()
 
+            if len(acc) > 0:
+                plt.plot(acc)
+                plt.title('acc')
+                plt.savefig('.'.join(p.split('.')[:-1]) + '_acc.jpg')
+                plt.cla()
