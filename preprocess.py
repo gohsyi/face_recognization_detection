@@ -2,7 +2,7 @@ import os
 import cv2
 import math
 import numpy as np
-from common.util import timed
+from util import timed, get_data_and_labels
 
 
 def process_annotation(image, output_path, annotation, offsets=None):
@@ -124,3 +124,12 @@ for root, dirs, files in os.walk(os.path.join('data', 'FDDB-folds')):
                         process_annotation(image, output_path, annotation, offset)
                         f.write(f'{output_path} 0\n')
                         cnt += 1
+
+
+hog_X_train, hog_y_train = get_data_and_labels('data/train.txt')
+hog_X_test, hog_y_test = get_data_and_labels('data/test.txt')
+
+np.savetxt('data/hog_X_train.csv', hog_X_train, delimiter=',')
+np.savetxt('data/hog_y_train.csv', hog_y_train, delimiter=',')
+np.savetxt('data/hog_X_test.csv', hog_X_test, delimiter=',')
+np.savetxt('data/hog_y_test.csv', hog_y_test, delimiter=',')

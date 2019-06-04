@@ -1,6 +1,7 @@
 import heapq
 import numpy as np
 
+import time
 from tqdm import tqdm
 
 from baselines.common import squared_difference
@@ -27,8 +28,8 @@ class LDA(Model):
         self.knn = KNN(K)
 
     def fit(self, X, y):
-        pos = Scatter(X[y==1, :])
-        neg = Scatter(X[y==0, :])
+        pos = Scatter(X[np.squeeze(y)==1, :])
+        neg = Scatter(X[np.squeeze(y)==0, :])
 
         S_B = np.matmul((pos.mu-neg.mu), (pos.mu-neg.mu).T)
         S_W = pos.n * pos.Sigma + neg.n * neg.Sigma
@@ -61,23 +62,10 @@ class KNN(object):
         pred = []
         for x in tqdm(X):
             vote = [0, 0]
-
             neighbors = heapq.nsmallest(self.K, self.X, key=lambda xx: squared_difference(xx[:-1], x))
             for xx in neighbors:
                 vote[int(xx[-1])] += 1 / squared_difference(xx[:-1], x)
             pred.append(np.argmax(vote))
-        return pred
+        time.sleep(0.01)
 
-
-if __name__ == '__main__':
-    from common.util import get_data_and_labels
-
-    X_train, y_train = get_data_and_labels('data/train.txt')
-    X_test, y_test = get_data_and_labels('data/test.txt')
-
-    model = LDA()
-    model.fit(X_train, y_train)
-
-    pred = model.predict(X_test)
-
-    print('acc:%.4f' % np.mean(pred == y_test))
+        return np.expand_dims(np.array(pred), -1)

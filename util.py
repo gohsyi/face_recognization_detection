@@ -30,8 +30,8 @@ def get_logger(name, folder='logs'):
 
     loggerDict.append(name)
 
-    if os.path.exists(os.path.join('logs', '{}.log'.format(name))):
-        os.remove(os.path.join('logs', '{}.log'.format(name)))
+    # if os.path.exists(os.path.join('logs', '{}.log'.format(name))):
+    #     os.remove(os.path.join('logs', '{}.log'.format(name)))
 
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
@@ -125,7 +125,7 @@ def get_data_and_labels(txt, do_hog=True):
         ax2.set_title('Histogram of Oriented Gradients')
         plt.show()
 
-    return np.array(X), np.array(y)
+    return shuffle(np.array(X), np.array(y))
 
 
 def shuffle(X, y):
@@ -143,6 +143,6 @@ def shuffle(X, y):
 
     data = np.concatenate([X, y], -1)
     np.random.shuffle(data)
-    X, y = data[:, :-1], data[:, -1]
+    X, y = data[:, :-1], data[:, -1:]
 
     return X, y
