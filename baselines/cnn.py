@@ -1,8 +1,6 @@
 import numpy as np
 import tensorflow as tf
 
-from common.util import get_data_and_labels
-
 from baselines.common import Model
 from baselines.common import layers, tf_util
 
@@ -29,9 +27,14 @@ class CNN(Model):
                  image_channels=3,  # channels of image
                  logger=None,  # user-defined logger
                  seed=0,  # global random seed
+                 X_test=None,  # test data
+                 y_test=None,  # test label
                  log_interval=10):  # specifies how frequently the logs are printed out
 
         super(CNN, self).__init__(logger=logger, seed=seed)
+
+        self.X_test = X_test
+        self.y_test = y_test
 
         self.X = tf.placeholder(tf.float32, [None, image_height, image_width, image_channels], 'observation')
         self.Y = tf.placeholder(tf.int32, [None], 'ground_truth')
@@ -86,7 +89,13 @@ class CNN(Model):
             losses.append(loss)
 
             if ep % self.log_interval == 0:
-                self.output(f'ep:{ep}\tloss:%.4f' % np.mean(losses))
+                if self.X_test is not None:
+                    acc = float(np.mean(self.predict(self.X_test)==self.y_test))
+                    loss = float(np.mean(losses))
+                    self.output(f'ep:{ep}\tloss:%.4f\tacc:%.3f' % (loss, acc))
+                else:
+                    self.output(f'ep:{ep}\tloss:%.4f' % np.mean(losses))
+
                 losses = []
 
         return self
@@ -98,7 +107,7 @@ class CNN(Model):
         :return: predicted labels
         """
 
-        return self.sess.run([self.y_pred], feed_dict={
+        return self.sess.run(self.y_pred, feed_dict={
             self.X: X
         })
 
@@ -112,24 +121,3 @@ class CNN(Model):
 
         batch_indices = np.random.choice(X.shape[0], self.batch_size, replace=False)
         return X[batch_indices, :, :, :], y[batch_indices]
-
-
-# test
-if __name__ == '__main__':
-
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-gpu', type=str, default='-1')
-    args = parser.parse_args()
-
-    import os
-    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-    os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
-
-    X, y = get_data_and_labels('data/train.txt', do_hog=False)
-    model = CNN()
-    model.fit(X, y)
-
-    X, y = get_data_and_labels('data/test.txt', do_hog=False)
-    pred = model.predict(X)
-    print('acc:%.4f' % np.mean(pred == y))

@@ -1,12 +1,10 @@
+import os
+import argparse
+
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
-
-import os
-import numpy as np
-import argparse
-import scipy.io as sio
 
 
 parser = argparse.ArgumentParser()

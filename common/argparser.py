@@ -18,7 +18,7 @@ parser.add_argument('-total_epoches', type=int, default=int(1e2))
 parser.add_argument('-langevin', type=float, default=0)
 
 # svm setting
-parser.add_argument('-kernel', type=str, default='linear/rbf/poly')
+parser.add_argument('-kernel', type=str, default='linear', help='linear/rbf/poly')
 
 # cnn setting
 parser.add_argument('-batch_size', type=int, default=265)
