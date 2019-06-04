@@ -6,7 +6,7 @@ from sklearn.svm import SVC
 if __name__ == '__main__':
     kernel = 'poly'
 
-    from util import get_data_and_labels
+    from common.util import get_data_and_labels
     X_train, y_train = get_data_and_labels('data/train.txt')
 
     model = SVC(kernel=kernel, verbose=True)

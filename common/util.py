@@ -2,11 +2,15 @@ import os
 import sys
 import cv2
 import time
+
 import logging
-import numpy as np
+from tqdm import tqdm
+
+import matplotlib
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
-from tqdm import tqdm
+import numpy as np
 from skimage.feature import hog
 from contextlib import contextmanager
 from skimage import exposure

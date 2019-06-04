@@ -1,7 +1,7 @@
 import numpy as np
 
 from common.argparser import args
-from util import get_data_and_labels, get_logger, timed
+from common.util import get_data_and_labels, get_logger, timed
 
 
 with timed('loading data ...'):

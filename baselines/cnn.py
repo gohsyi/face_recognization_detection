@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 
-from util import get_data_and_labels
+from common.util import get_data_and_labels
 
 from baselines.common import Model
 from baselines.common import layers, tf_util

@@ -2,7 +2,7 @@ import os
 import cv2
 import math
 import numpy as np
-from util import timed, get_data_and_labels
+from common.util import timed, get_data_and_labels
 
 
 def process_annotation(image, output_path, annotation, offsets=None):
