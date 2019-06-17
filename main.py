@@ -21,6 +21,7 @@ if args.model == 'lr':
     model = LogisticRegression(
         learning_rate=args.lr,
         total_epoches=args.total_epoches,
+        langevin=args.langevin,
         seed=args.seed,
         logger=logger,
         X_test=X_test,

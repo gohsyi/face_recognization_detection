@@ -14,6 +14,9 @@ parser.add_argument('-lr', type=float, default=1e-3, help='learning rate')
 parser.add_argument('-seed', type=int, default=0, help='global random seed')
 parser.add_argument('-total_epoches', type=int, default=int(1e2))
 
+# logistic regression setting
+parser.add_argument('-langevin', action='store_true', default=False)
+
 # svm setting
 parser.add_argument('-kernel', type=str, default='linear', help='linear/rbf/poly')
 
