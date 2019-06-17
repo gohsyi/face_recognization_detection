@@ -4,7 +4,7 @@ import argparse
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-plt.style.use("ggplot")
+plt.style.use("seaborn-paper")
 
 
 parser = argparse.ArgumentParser()
@@ -26,7 +26,7 @@ for root, dirs, files in os.walk('logs'):
                         loss, acc = [], []
                     if x[0] == 'loss':
                         loss.append(float(x[1]))
-                    if x[0] == 'acc':
+                    if x[0] == 'acc' or x[0] == 'cost':
                         acc.append(float(x[1]))
 
             if len(loss) > 0:
