@@ -67,3 +67,7 @@ with timed('predicting ...'):
 y_pred = np.reshape(y_pred, y_test.shape)
 
 logger.info(f'acc:{np.mean(y_pred==y_test)}')
+
+if args.model == 'fisher':
+    logger.info(f'intra_variance:{model.intra}')
+    logger.info(f'inter_variance:{model.inter}')

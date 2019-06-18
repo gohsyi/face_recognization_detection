@@ -27,7 +27,7 @@ parser.add_argument('-batch_size', type=int, default=256)
 parser.add_argument('-winSize', type=int, default=200)
 parser.add_argument('-stride', type=int, default=10)
 parser.add_argument('-thres_score', type=float, default=0.95)
-parser.add_argument('-thres_iou', type=float, default=0.3)
+parser.add_argument('-thres_iou', type=float, default=0.1)
 parser.add_argument('-scales', type=str, default='1.0,0.6,1.3')
 parser.add_argument('-hw_ratios', type=str, default='1.0,1.2,1.4,1.3')
 
