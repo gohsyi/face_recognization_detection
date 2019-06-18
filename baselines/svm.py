@@ -1,18 +1,28 @@
+import cv2
 import numpy as np
 
 from sklearn.svm import SVC
+from skimage.feature import hog
 
 
-if __name__ == '__main__':
-    kernel = 'poly'
+class SVM():
+    def __init__(self, kernel):
+        self.backend = SVC(kernel=kernel)
 
-    from common.util import get_data_and_labels
-    X_train, y_train = get_data_and_labels('data/train.txt')
+    def fit(self, X, y):
+        self.backend.fit(X, y)
+        return self
 
-    model = SVC(kernel=kernel, verbose=True)
-    model.fit(X_train, y_train)
+    def predict(self, X):
+        return self.backend.predict(X)
 
-    X_test, y_test = get_data_and_labels('data/test.txt')
-    y_pred = model.predict(X_test)
+    def score(self, img):
+        img = cv2.resize(img, (96, 96))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img = hog(
+            img,
+            pixels_per_cell=(16, 16),
+            cells_per_block=(2, 2),
+        )
 
-    print('acc:%.4f' % np.mean(y_pred == y_test))
+        return self.backend.decision_function(np.expand_dims(img, 0))

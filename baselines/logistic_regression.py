@@ -1,4 +1,7 @@
 import numpy as np
+import cv2
+
+from skimage.feature import hog
 
 from baselines.common.model import Model
 
@@ -121,3 +124,14 @@ class LogisticRegression(Model):
     @staticmethod
     def sigmoid(z):
         return 1. / (1 + np.exp(-z))
+
+    def score(self, img):
+        img = cv2.resize(img, (96, 96))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img = hog(
+            img,
+            pixels_per_cell=(16, 16),
+            cells_per_block=(2, 2),
+        )
+
+        return float(self.hypothesis(np.expand_dims(img, 0)))

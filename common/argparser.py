@@ -21,13 +21,20 @@ parser.add_argument('-langevin', action='store_true', default=False)
 parser.add_argument('-kernel', type=str, default='linear', help='linear/rbf/poly')
 
 # cnn setting
-parser.add_argument('-batch_size', type=int, default=265)
+parser.add_argument('-batch_size', type=int, default=256)
 
-# fisher setting
-parser.add_argument('-N', type=int, default=20, help='choose N eigenvectors')
-parser.add_argument('-K', type=int, default=5, help='K nearest neighbours')
+# detection setting
+parser.add_argument('-winSize', type=int, default=200)
+parser.add_argument('-stride', type=int, default=10)
+parser.add_argument('-thres_score', type=float, default=0.95)
+parser.add_argument('-thres_iou', type=float, default=0.3)
+parser.add_argument('-scales', type=str, default='1.0,0.6,1.3')
+parser.add_argument('-hw_ratios', type=str, default='1.0,1.2,1.4,1.3')
 
 args = parser.parse_args()
+args.scales = list(map(float, args.scales.split(',')))
+args.hw_ratios = list(map(float, args.hw_ratios.split(',')))
+
 
 import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
