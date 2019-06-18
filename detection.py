@@ -13,7 +13,7 @@ def detect_face(model, img):
     img = img.copy()
     img_h, img_w, img_c = img.shape
     stride_w, stride_h = (args.stride, args.stride)
-    results = []
+    res = []
 
     for scale in args.scales:
         for hw_ratio in args.hw_ratios:
@@ -27,27 +27,27 @@ def detect_face(model, img):
                     score = model.score(img[bbox[2]:bbox[3], bbox[0]:bbox[1], :])
 
                     if score > args.thres_score:
-                        new_face = True
                         overlap = []
-                        for i in range(len(results)):
-                            iou = IoU(bbox, results[i][1])
+                        for i in range(len(res)):
+                            iou = IoU(bbox, res[i][1])
                             if iou > args.thres_iou:
-                                if score > results[i][0]:
+                                if score > res[i][0]:
                                     overlap.append(i)
                                 else:
-                                    new_face = False
                                     break
-                        if new_face:
-                            results.append((score, bbox))
-                        for k in range(len(overlap)):
-                            results.pop(overlap[k] - k)
+                        else:
+                            res.append((score, bbox))
+
+                        # trick, pop index
+                        for i in range(len(overlap)):
+                            res.pop(overlap[i] - i)
 
     # Draw Bounding Boxes
-    for _, bbox in results:
+    for _, bbox in res:
         color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
         cv2.rectangle(img, (bbox[0],bbox[2]), (bbox[1],bbox[3]), color, 2)
 
-    return results, img
+    return res, img
 
 
 def IoU(boxA, boxB):

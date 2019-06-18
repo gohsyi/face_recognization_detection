@@ -1,5 +1,6 @@
 import numpy as np
 import tensorflow as tf
+import cv2
 
 from baselines.common import Model
 from baselines.common import layers, tf_util
@@ -48,6 +49,7 @@ class CNN(Model):
 
         logits = layers.dense(tf.layers.flatten(pool2), 2)
 
+        self.y_prob = tf.nn.softmax(logits)
         self.y_pred = tf.argmax(logits, -1)
 
         self.loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
@@ -121,3 +123,8 @@ class CNN(Model):
 
         batch_indices = np.random.choice(X.shape[0], self.batch_size, replace=False)
         return X[batch_indices, :, :, :], y[batch_indices]
+
+    def score(self, img):
+        return self.sess.run(self.y_prob, feed_dict={
+            self.X: np.expand_dims(cv2.resize(img, (96, 96)), 0)
+        })[0, 1]
